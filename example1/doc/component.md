@@ -1,0 +1,12 @@
+**Harness engineering** is the system built around an AI model that determines what the model sees, how it acts, what it remembers, and how it recovers from failure. While the model acts as the "reasoning engine," the harness is the machinery that enables a model to function as a reliable agent within a real-world workflow.
+
+The architecture of a harness is composed of several key primitives:
+
+*   **Instructions and Context Delivery:** These initial layers define the agent's persona and rules (such as `agents.md` or repository rules) and provide the necessary materials, like source files or stack traces, to prevent hallucinations.
+*   **Context Management:** Because models have finite context windows and limited attention, the harness must manage what information enters the model at any given time using techniques like **RAG, reranking, summarization, and compaction**.
+*   **Tool Interface and Execution Environment:** Tools allow an agent to act rather than just talk. The harness provides a secure **execution environment** (like sandboxes or containers) where these tools can run with specific boundaries and credentials.
+*   **Durable State and Orchestration:** Durable state acts as a "workbench" that preserves progress, logs, and artifacts outside of the model's immediate context window. **Orchestration** manages the lifecycle of the work, handling retries, approval gates, and human handoffs.
+*   **Sub-agents and Skills:** To handle complex tasks without overwhelming a single model's attention, the harness can delegate work to **specialized sub-agents**. It also provides **Skills**, which are reusable procedures or checklists for recurring tasks like PR reviews or browser checks.
+*   **Verification and Observability:** A reliable harness does not simply trust the model's output; it uses **verification** (tests, builds, or screenshots) to prove the work succeeded. **Observability** provides a detailed record of the run—including traces and tool calls—making the agentic system debuggable and improvable.
+
+Ultimately, harness engineering represents a shift from relying on "model smartness" to building **dependable systems** where failures become infrastructure for future improvements.

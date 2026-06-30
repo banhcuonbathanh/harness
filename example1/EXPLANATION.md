@@ -144,3 +144,25 @@ Then experiment:
 | **Context management** | Trims/summarizes when too long | `manage_context()` |
 | **Tools** | Real actions the model can request | `TOOLS` |
 | **Environment** | The world tools act on; what tests check | `ENVIRONMENT` |
+
+---
+
+## From toy to production harness
+
+The 5 pieces above are the *foundation*. A real-world harness keeps all of
+them and adds more machinery to stay reliable on big, messy tasks. The full
+set of primitives is described in [doc/component.md](doc/component.md);
+here's how they relate to what you just saw:
+
+| Production primitive | What it adds | Where the example hints at it |
+|----------------------|--------------|-------------------------------|
+| **Instructions & context delivery** | A persona, rules (`agents.md`), and source material fed in up front to prevent hallucination | The initial `task` message in `context` |
+| **Context management** | RAG, reranking, summarization, compaction — not just trimming | `manage_context()` (here: a plain trim) |
+| **Tool interface & execution environment** | Tools run inside a sandbox/container with scoped credentials and boundaries | `TOOLS` running against `ENVIRONMENT` (here: an unsandboxed dict) |
+| **Durable state & orchestration** | A "workbench" that survives outside the context window; retries, approval gates, human handoffs | *Not in the example* — `context` lives only in memory |
+| **Sub-agents & skills** | Delegate hard sub-tasks to specialized agents; reuse checklists for recurring jobs | *Not in the example* — one model does everything |
+| **Verification & observability** | Tests/builds/screenshots prove success; traces make the run debuggable | The `assert` and `print()` calls in the test block |
+
+The throughline: harness engineering is a shift from relying on **"model
+smartness"** to building **dependable systems**, where failures become
+infrastructure for future improvement rather than dead ends.
